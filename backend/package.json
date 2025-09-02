@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "migrate": "node src/scripts/migrate.js",
     "seed": "node src/scripts/seed.js",
-    "test": "cross-env SQLITE_PATH=:memory: jest --runInBand"
+    "postinstall": "npm run migrate && npm run seed"
   },
   "keywords": [],
   "author": "",

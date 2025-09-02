@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import axios from "axios";
 
-const API = import.meta.env.VITE_API_URL || "https://crud-5twl.onrender.com/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 
 export default function CustomerProfile() {
   const { id } = useParams();

@@ -41,7 +41,10 @@ router.post("/:customerId", (req, res) => {
   const customer = db
     .prepare(`SELECT id FROM customers WHERE id = ?`)
     .get(customerId);
-  if (!customer) return res.status(404).json({ error: "Customer not found" });
+  if (!customer)
+    return res
+      .status(404)
+      .json({ error: "Customer not found", message: "Customer not found" });
   const parsed = addressInputSchema.parse(req.body);
 
   const insert = db.prepare(
@@ -66,7 +69,10 @@ router.post("/:customerId", (req, res) => {
 router.put("/:id", (req, res) => {
   const id = Number(req.params.id);
   const existing = db.prepare(`SELECT * FROM addresses WHERE id = ?`).get(id);
-  if (!existing) return res.status(404).json({ error: "Address not found" });
+  if (!existing)
+    return res
+      .status(404)
+      .json({ error: "Address not found", message: "Address not found" });
   const parsed = addressUpdateSchema.parse(req.body);
   const updates = [];
   const params = [];
@@ -96,7 +102,9 @@ router.delete("/:id", (req, res) => {
   const id = Number(req.params.id);
   const info = db.prepare(`DELETE FROM addresses WHERE id = ?`).run(id);
   if (info.changes === 0)
-    return res.status(404).json({ error: "Address not found" });
+    return res
+      .status(404)
+      .json({ error: "Address not found", message: "Address not found" });
   res.json({ message: "Address deleted" });
 });
 

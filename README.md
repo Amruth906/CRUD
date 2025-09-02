@@ -96,3 +96,28 @@ Add tests under `backend/__tests__/` and import the express app from `src/server
 
 - Logging and central error handling included.
 - SQLite uses WAL mode for better concurrency.
+
+### Deployment
+
+#### Render (Backend)
+
+1. Create a new Web Service from the `backend` folder.
+2. Set Start Command to:
+
+   `npm start`
+
+3. `postinstall` already runs migrations and seed automatically (see `backend/package.json`).
+4. Add a Persistent Disk (recommended):
+   - Mount Path: `/data`
+   - Environment Variable: `SQLITE_PATH=/data/app.sqlite`
+5. Ensure `PORT` environment is managed by Render (default).
+6. Health check: `GET /health`.
+
+#### Netlify (Frontend)
+
+1. Use this repo, set base directory to `frontend`.
+2. Build command: `npm ci && npm run build` (already set in `netlify.toml`).
+3. Publish directory: `dist` (already set in `netlify.toml`).
+4. Environment variable:
+   - `VITE_API_URL=https://<your-render-service>.onrender.com/api`
+5. Redirects for SPA are configured in `netlify.toml`.

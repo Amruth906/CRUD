@@ -1,7 +1,7 @@
 const { ZodError } = require("zod");
 
 function notFoundHandler(req, res, next) {
-  res.status(404).json({ error: "Not Found" });
+  res.status(404).json({ error: "Not Found", message: "Resource not found" });
 }
 
 function errorHandler(logger) {

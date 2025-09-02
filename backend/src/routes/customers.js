@@ -55,18 +55,19 @@ router.post("/", (req, res) => {
   const created = db
     .prepare(`SELECT * FROM customers WHERE id = ?`)
     .get(customerId);
-  res
-    .status(201)
-    .json({
-      message: "Customer created successfully",
-      data: mapCustomer(created),
-    });
+  res.status(201).json({
+    message: "Customer created successfully",
+    data: mapCustomer(created),
+  });
 });
 
 router.get("/:id", (req, res) => {
   const id = Number(req.params.id);
   const customer = db.prepare(`SELECT * FROM customers WHERE id = ?`).get(id);
-  if (!customer) return res.status(404).json({ error: "Customer not found" });
+  if (!customer)
+    return res
+      .status(404)
+      .json({ error: "Customer not found", message: "Customer not found" });
   const addresses = db
     .prepare(
       `SELECT * FROM addresses WHERE customer_id = ? ORDER BY is_primary DESC, id ASC`
@@ -158,7 +159,10 @@ router.get("/", (req, res) => {
 router.put("/:id", (req, res) => {
   const id = Number(req.params.id);
   const existing = db.prepare(`SELECT * FROM customers WHERE id = ?`).get(id);
-  if (!existing) return res.status(404).json({ error: "Customer not found" });
+  if (!existing)
+    return res
+      .status(404)
+      .json({ error: "Customer not found", message: "Customer not found" });
 
   const parsed = customerUpdateSchema.parse(req.body);
   const updates = [];
@@ -192,7 +196,9 @@ router.delete("/:id", (req, res) => {
   // For demo, allow deletion but confirm
   const info = db.prepare(`DELETE FROM customers WHERE id = ?`).run(id);
   if (info.changes === 0)
-    return res.status(404).json({ error: "Customer not found" });
+    return res
+      .status(404)
+      .json({ error: "Customer not found", message: "Customer not found" });
   res.json({
     message: `Customer deleted. Removed ${hasLinked} linked addresses.`,
   });
